@@ -202,11 +202,69 @@ def add_new_category():
 
 
 def edit_category():
-    print(7)
+    try:
+        id_ = int(input("Enter the category's ID: "))
+    except:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    from lib.db.connection import Session
+    from lib.db.models import Category
+
+    session = Session()
+    category = session.query(Category).filter_by(id=id_).first()
+    if not category:
+        print("\nNo category with that ID found.\n")
+        return
+    
+    new_name = input("Enter category's new name: ").strip()
+    if not new_name:
+        print("Name cannot be an empty string.\n")
+        return
+    
+    try:
+        category.update_name(session, new_name)
+        print(f"\nSuccess! Category updated to: <ID: {category.id} | Name: {category.name}>\n")
+
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while updating category: {exc}\n")
+
+    finally:
+        session.close()
 
 
 def delete_category():
-    print(10)
+    try:
+        id_ = int(input("Enter the category's ID: "))
+    except:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    from lib.db.connection import Session
+    from lib.db.models import Category
+
+    session = Session()
+    category = Category.find_by_id(id_)
+    if not category:
+        print("\nNo category with that ID found.\n")
+        return
+    
+    confirm = input("Are you sure you want to delete this category? (yes/no): ").strip().lower()
+    if confirm != 'yes':
+        print("Category Deletion cancelled.\n")
+        return
+    
+    try:
+        category.delete(session)
+        print("\nSuccess! Category deleted.\n")
+    
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while deleting category: {exc}\n")
+    
+    finally:
+        session.close()
 
 
 # Post Helper Functions
@@ -252,28 +310,50 @@ def find_post_by_id():
 
 
 def add_new_post():
-    name = input("Enter the new user's name: ").strip()
-    if not name:
-        print("Name cannot be an empty string.\n")
-        return
-    
-    if not all(char.isalpha() or char.isspace() for char in name):
-        print("Name must contain only letters and spaces.\n")
-        return
-    
     from lib.db.connection import Session
     from lib.db.models import Post
 
+    title = input("Enter the post's title: ").strip()
+    if not title:
+        print("\nTitle cannot be an empty string\n")
+        return
+        
+    content = input("Enter the post's content: ").strip()
+    if not content:
+        print("\nContent cannot be an empty string\n")
+        return
+        
+    user_id_input = input("Enter post's user's ID: ")
+    if not user_id_input:
+        print("\nUser ID cannot be empty.\n")
+        return
+    try:
+        user_id = int(user_id_input)
+    except ValueError:
+        print("\nUser ID must be an integer.\n")
+        return
+        
+    category_id_input = input("Enter post's category's ID: ")
+    if not category_id_input:
+        print("\nCategory ID cannot be empty.\n")
+        return
+    try:
+        category_id = int(category_id_input)
+    except ValueError:
+        print("\nCategory ID must be an integer.\n")
+        return
+        
     session = Session()
     try:
-        user = User.create(session, name)
-        print(f"\nSuccess! New user added: <ID: {user.id} | Name: {user.name}>\n")
+        post = Post.create(session, title, content, user_id, category_id)
+        print(f"\nSuccess! New post added: <ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>\n")
+        print(f"< {post.content} >")
     except Exception as exc:
         session.rollback()
-        print(f"\nError occurred while adding user: {exc}\n")
+        print(f"\nError occurred while adding post: {exc}\n")
     finally:
         session.close()
-
+        
 
 def edit_post():
     print(14)

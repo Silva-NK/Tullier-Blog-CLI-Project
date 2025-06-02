@@ -133,6 +133,21 @@ class Category(Base):
         session.add(category)
         session.commit()
         return category
+    
+    def update_name(self, session, new_name):
+        if not isinstance(new_name, str):
+            raise TypeError("Name must be a string")
+        
+        new_name = new_name.strip()
+        if not new_name:
+            raise ValueError("Name cannot be an enpty string.")
+        
+        self.name = new_name
+        session.commit()
+    
+    def delete(self, session):
+        session.delete(self)
+        session.commit()
 
 
 # Post Model Class
@@ -191,12 +206,16 @@ class Post(Base):
         if not content:
             raise ValueError("Content cannot be an empty string.")
         
+        if user_id is None or str(user_id).strip() == "":
+            raise ValueError("User ID cannot be empty.")
         if not isinstance(user_id, int):
             raise TypeError("User ID must be an integer.")
         user = session.query(User).filter_by(id=user_id).first()
         if not user:
             raise ValueError("No User instance with this User ID.")
         
+        if category_id is None or str(category_id).strip() == "":
+            raise ValueError("Category ID cannot be empty.")
         if not isinstance(category_id, int):
             raise TypeError("Category ID must be an integer.")
         category = session.query(Category).filter_by(id=category_id).first()
