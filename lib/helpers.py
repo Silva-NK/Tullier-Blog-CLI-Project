@@ -3,7 +3,9 @@ from lib.db.models import User, Category, Post
 def exit_program():
     print("Goodbye!")
     exit()
-    
+
+
+# User Helper Functions
     
 def list_users():
     users = User.get_all()
@@ -45,16 +47,100 @@ def find_user_by_id():
 
 
 def add_new_user():
-    print(4)
+    name = input("Enter the new user's name: ").strip()
+    if not name:
+        print("Name cannot be an empty string.\n")
+        return
+    
+    if not all(char.isalpha() or char.isspace() for char in name):
+        print("Name must contain only letters and spaces.\n")
+        return
+    
+    from lib.db.connection import Session
+    from lib.db.models import User
+
+    session = Session()
+    try:
+        user = User.create(session, name)
+        print(f"\nSuccess! New user added: <ID: {user.id} | Name: {user.name}>\n")
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while adding user: {exc}\n")
+    finally:
+        session.close()
 
 
 def edit_user():
-    print(5)
+    from lib.db.connection import Session
+    from lib.db.models import User
+
+    try:
+        id_ = int(input("Enter the user's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        user = session.query(User).filter_by(id=id_).first()
+        if not user:
+            print("\nNo user with matching ID found.\n")
+            return
+        
+        new_name = input("Enter user's new name: ").strip()
+        if not new_name:
+            print("Name cannot be an empty string.\n")
+            return
+        
+        if not all(char.isalpha() or char.isspace() for char in new_name):
+            print("Name must contain only letters and spaces.\n")
+            return
+        
+        user.update_name(session, new_name)
+        print(f"\nSuccess! User edited: <ID: {user.id} | New Name: {user.name}>\n")
+
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while editing user: {exc}\n")
+
+    finally:
+        session.close()
 
 
 def delete_user():
-    print(6)
+    from lib.db.connection import Session
+    from lib.db.models import User
 
+    try:
+        id_ = int(input("Enter the user's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        user = User.find_by_id(id_)
+        if not user:
+            print("\nNo user with matching ID found.\n")
+            return
+        
+        confirm = input("Are you sure you want to delete this user? (yes/no): ").strip().lower()
+        if confirm != 'yes':
+            print("User Deletion cancelled.\n")
+            return
+        
+        user.delete(session)
+        print(f"\nSuccess! User deleted: <ID: {user.id} | Name: {user.name}>\n")
+
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while deleting user: {exc}\n")
+
+    finally:
+        session.close()
+
+
+# Category Helper Functions
 
 def list_categories():
     categories = Category.get_all()
@@ -106,6 +192,8 @@ def edit_category():
 def delete_category():
     print(10)
 
+
+# Post Helper Functions
 
 def list_posts():
     posts = Post.get_all()

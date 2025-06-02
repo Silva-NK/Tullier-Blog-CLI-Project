@@ -42,6 +42,40 @@ class User(Base):
             return user
         finally:
             session.close()
+    
+    @classmethod
+    def create(cls, session, name):
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string.")
+        
+        if not name.strip():
+            raise ValueError("Name cannot be an enpty string.")
+        
+        if not all(char.isalpha() or char.isspace() for char in name):
+            raise ValueError("Name must contain only letters and spaces.")
+        
+        user = cls(name=name)
+        session.add(user)
+        session.commit()
+        return user
+    
+    def update_name(self, session, new_name):
+        if not isinstance(new_name, str):
+            raise TypeError("Name must be a string.")
+    
+        new_name = new_name.strip()
+        if not new_name:
+            raise ValueError("Name cannot be an empty string.")
+        
+        if not all(char.isalpha() or char.isspace() for char in new_name):
+            raise ValueError("Name must contain only letters and spaces.")
+        
+        self.name = new_name
+        session.commit()
+
+    def delete(self, session):
+        session.delete(self)
+        session.commit()
 
 
 
