@@ -182,7 +182,23 @@ def find_category_by_id():
     
 
 def add_new_category():
-    print(1)
+    name = input("Enter the new category's name: ").strip()
+    if not name:
+        print("Name cannot be an empty string.\n")
+        return
+    
+    from lib.db.connection import Session
+    from lib.db.models import Category
+
+    session = Session()
+    try:
+        category = Category.create(session, name)
+        print(f"\nSuccess! New category added added: <ID: {category.id} | Name: {category.name}>\n")
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while adding category: {exc}\n")
+    finally:
+        session.close()
 
 
 def edit_category():
@@ -236,7 +252,27 @@ def find_post_by_id():
 
 
 def add_new_post():
-    print(13)
+    name = input("Enter the new user's name: ").strip()
+    if not name:
+        print("Name cannot be an empty string.\n")
+        return
+    
+    if not all(char.isalpha() or char.isspace() for char in name):
+        print("Name must contain only letters and spaces.\n")
+        return
+    
+    from lib.db.connection import Session
+    from lib.db.models import Post
+
+    session = Session()
+    try:
+        user = User.create(session, name)
+        print(f"\nSuccess! New user added: <ID: {user.id} | Name: {user.name}>\n")
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while adding user: {exc}\n")
+    finally:
+        session.close()
 
 
 def edit_post():

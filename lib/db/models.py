@@ -5,6 +5,9 @@ from lib.db.connection import Engine, Session
 
 Base = declarative_base()
 
+
+# User Model Class
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -78,6 +81,7 @@ class User(Base):
         session.commit()
 
 
+# Category Model Class
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -117,7 +121,21 @@ class Category(Base):
         finally:
             session.close()
 
+    @classmethod
+    def create(cls, session, name):
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string.")
+        
+        if not name.strip():
+            raise ValueError("Name cannot be an enpty string.")
+        
+        category = cls(name=name)
+        session.add(category)
+        session.commit()
+        return category
 
+
+# Post Model Class
 
 class Post(Base):
     __tablename__ = 'posts'
@@ -160,3 +178,32 @@ class Post(Base):
             return post
         finally:
             session.close()
+
+    @classmethod
+    def create(cls, session, title, content, user_id, category_id):
+        if not isinstance(title, str):
+            raise TypeError("Title must be a string.")
+        title = title.strip()
+        if not title:
+            raise ValueError("Title cannot be an enpty string.")
+        
+        content = content.strip() if isinstance(content, str) else ""
+        if not content:
+            raise ValueError("Content cannot be an empty string.")
+        
+        if not isinstance(user_id, int):
+            raise TypeError("User ID must be an integer.")
+        user = session.query(User).filter_by(id=user_id).first()
+        if not user:
+            raise ValueError("No User instance with this User ID.")
+        
+        if not isinstance(category_id, int):
+            raise TypeError("Category ID must be an integer.")
+        category = session.query(Category).filter_by(id=category_id).first()
+        if not category:
+            raise ValueError("No Category instance with this Category ID.")
+        
+        post = cls(title=title, content=content, user_id=user_id, category_id=category_id)
+        session.add(post)
+        session.commit()
+        return post
