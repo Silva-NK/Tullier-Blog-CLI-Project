@@ -1,11 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from lib.db.connection import Engine, Session 
 from lib.db.models import Base, User, Category, Post
 
-DATABASE_URL = "sqlite:///lib/db/tullierdb.db"
 
-Engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=Engine)
 session = Session()
 
 Base.metadata.create_all(Engine)

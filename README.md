@@ -20,6 +20,7 @@ It utilises SQLITE database and a OOP-based design to ensure a simple, clean and
     │   │      ├── env.py
     │   │      └── script.py.mako
     │   ├── alembic.ini
+    │   ├── connection.py
     │   ├── models.py
     │   └── seed.py
     ├── cli.py
@@ -55,7 +56,7 @@ This approach maintains the integrity of the application and simplifies the user
 
 4. Ensure that you populate 'python -m lib.db.seed' to seed the data with constant data and editable example data.
 
-5. In order to open the CLI menu, just run 'python lib/cli.py'
+5. In order to open the CLI menu, just run 'python -m lib.cli'
 
 ### Creating Your Own Git Repo
 

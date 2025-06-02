@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
+from lib.db.connection import Engine, Session
 
 Base = declarative_base()
 
@@ -15,6 +16,15 @@ class User(Base):
     def __repr__(self):
         return f"Success: <User(id={self.id}: Name ='{self.name}')>."
     
+    @classmethod
+    def get_all(cls):
+        session = Session()
+        try:
+            users = session.query(cls).all()
+            return users
+        finally:
+            session.close()
+
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -27,6 +37,15 @@ class Category(Base):
     def __repr__(self):
         return f"Success: <Category(id={self.id}: Name ='{self.name}')>."
     
+    @classmethod
+    def get_all(cls):
+        session = Session()
+        try:
+            categories = session.query(cls).all()
+            return categories
+        finally:
+            session.close()
+
 
 class Post(Base):
     __tablename__ = 'posts'
@@ -42,3 +61,12 @@ class Post(Base):
 
     def __repr__(self):
         return f"Success: <Post(id={self.id}: Title ='{self.title}', User = '{self.user}'), Category = '{self.category}')>."
+    
+    @classmethod
+    def get_all(cls):
+        session = Session()
+        try:
+            posts = session.query(cls).all()
+            return posts
+        finally:
+            session.close()

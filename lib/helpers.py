@@ -1,10 +1,18 @@
+from lib.db.models import User, Category, Post
+
 def exit_program():
     print("Goodbye!")
     exit()
     
     
 def list_users():
-    print(1)
+    users = User.get_all()
+    if users:
+        print("\n=== All Users ===")
+        for user in users:
+            print(f"<ID: {user.id} | Name: {user.name}>")
+    else:
+        print("\nNo users found.")
 
 
 def find_user_by_name():
@@ -28,7 +36,13 @@ def delete_user():
 
 
 def list_categories():
-    print(7)
+    categories = Category.get_all()
+    if categories:
+        print("\n=== All Categories ===")
+        for category in categories:
+            print(f"<ID: {category.id} | Name: {category.name}>")
+    else:
+        print("\nNo categories found.")
 
 
 def find_category_by_name():
@@ -40,7 +54,13 @@ def find_category_by_id():
 
 
 def list_posts():
-    print(10)
+    posts = Post.get_all()
+    if posts:
+        print("\n=== All Posts ===")
+        for post in posts:
+            print(f"<ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>")
+    else:
+        print("\nNo posts found.")
 
 
 def find_post_by_title():
