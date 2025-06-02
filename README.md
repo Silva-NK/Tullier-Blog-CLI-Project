@@ -14,6 +14,11 @@ It utilises SQLITE database and a OOP-based design to ensure a simple, clean and
 ├── README.md
 └── lib
     ├── db
+    │   ├── __pycache__
+    │   │      ├── connection.cpython-38.pyc
+    │   │      ├── models.cpython-38.pyc
+    │   │      ├── seed.cpython-38.pyc
+    │   │      ├── create_table.cpython-38.pyc
     │   ├── migrations
     │   │      ├── versions
     │   │      ├── README.md
@@ -21,8 +26,12 @@ It utilises SQLITE database and a OOP-based design to ensure a simple, clean and
     │   │      └── script.py.mako
     │   ├── alembic.ini
     │   ├── connection.py
+    │   ├── create_tables.py
     │   ├── models.py
     │   └── seed.py
+    ├── __pycache__
+    │      ├── cli.cpython-38.pyc
+    │      └── helpers.cpython-38.pyc
     ├── cli.py
     ├── debug.py
     └── helpers.py
@@ -39,7 +48,7 @@ This application uses 2 dynamic model classes with full ORM methods (`create`, `
  - `User`
  - `Post`
 
-- `Category` is a static, pre-seeded table that contains fixed categories relevant to posts. It functions as a lookup table, with no need for runtime creation, editing or deletion of category entries via the CLI but maintains the ORM methods and corresponding CLI options for `get all`, `find by name` and `find by id` for lookup purposes.
+`Category`, on the other hand, is a static, pre-seeded table model that contains fixed categories relevant to posts. It functions as a lookup table, with no need for runtime creation, editing or deletion of category entries via the CLI but maintains the ORM methods and corresponding CLI options for `get all`, `find by name` and `find by id` for lookup purposes.
 
 While the project requirements specify that *each* model class should have full CRUD CLI support, in this implementation, `Category` serves purely as seed data, ensuring data consistency and preventing unintended modification.  
 This approach maintains the integrity of the application and simplifies the user experience, while still adhering to the general project guidelines for dynamic data models.
@@ -54,9 +63,11 @@ This approach maintains the integrity of the application and simplifies the user
 
 3. Ensure that you enter the now created virtual environment using 'pipenv shell'
 
-4. Ensure that you populate 'python -m lib.db.seed' to seed the data with constant data and editable example data.
+4. If one wishes to create the EMPTY tables to be used, just run 'python -m lib.db.create_tables'
 
-5. In order to open the CLI menu, just run 'python -m lib.cli'
+5. (Optional) If you wish to create the tables and immediately populate them with example/test data, run 'python -m lib.db.seed' to seed the data with constant data and editable example/test data.
+
+6. In order to open the CLI menu, just run 'python -m lib.cli'
 
 ### Creating Your Own Git Repo
 
@@ -84,9 +95,7 @@ This approach maintains the integrity of the application and simplifies the user
 
 ## Conclusion
 
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
 
 ## Resources
 

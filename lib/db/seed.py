@@ -6,6 +6,10 @@ from lib.db.models import Base, User, Category, Post
 
 session = Session()
 
+# Drop all existing table first
+Base.metadata.drop_all(Engine)
+
+#Recreate all the tables as defined in models.py
 Base.metadata.create_all(Engine)
 
 categories = [
@@ -20,9 +24,7 @@ categories = [
 ]
 
 for cat_name in categories:
-    existing = session.query(Category). filter_by(name=cat_name).first()
-    if not existing:
-        session.add(Category(name=cat_name))
+    session.add(Category(name=cat_name))
 
 session.commit()
 print("Seeded permanent categories.")
