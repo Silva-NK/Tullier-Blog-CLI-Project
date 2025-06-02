@@ -9,6 +9,9 @@ from lib.helpers import (
     list_categories,
     find_category_by_name,
     find_category_by_id,
+    add_new_category,
+    edit_category,
+    delete_category,
     list_posts,
     find_post_by_title,
     find_post_by_id,
@@ -46,24 +49,30 @@ def main():
         elif choice == "9":
             find_category_by_id()
         elif choice == "10":
-            list_posts()
+            add_new_category()
         elif choice == "11":
-            find_post_by_title()
+            edit_category()
         elif choice == "12":
-            find_post_by_id()
+            delete_category()
         elif choice == "13":
-            add_new_post()
+            list_posts()
         elif choice == "14":
-            edit_post()
+            find_post_by_title()
         elif choice == "15":
-            delete_post()
+            find_post_by_id()
         elif choice == "16":
-            list_posts_by_user()
+            add_new_post()
         elif choice == "17":
-            list_posts_by_category()
+            edit_post()
         elif choice == "18":
-            list_category_by_user()
+            delete_post()
         elif choice == "19":
+            list_posts_by_user()
+        elif choice == "20":
+            list_posts_by_category()
+        elif choice == "21":
+            list_category_by_user()
+        elif choice == "22":
             list_users_by_category()
         else:
             print("Invalid choice")
@@ -75,22 +84,25 @@ def menu():
     print("1. List all users")
     print("2. Find user by name")
     print("3. Find user by id")
-    print("4: Add new user")
-    print("5: Edit existing user")
-    print("6: Delete exisitng user")
+    print("4. Add new user")
+    print("5. Edit existing user")
+    print("6. Delete existing user")
     print("7. List all categories")
     print("8. Find category by name")
     print("9. Find category by id")
-    print("10. List all posts")
-    print("11. Find post by name")
-    print("12. Find post by id")
-    print("13: Add new post")
-    print("14: Edit existing post")
-    print("15: Delete exisitng post")
-    print("16. List posts by user")
-    print("17. List posts by category")
-    print("18. List category contributions by user")
-    print("19: List user's contributors by category")
+    print("10. Add new category")
+    print("11. Edit existing category")
+    print("12. Delete existing category")
+    print("13. List all posts")
+    print("14. Find post by title")
+    print("15. Find post by id")
+    print("16. Add new post")
+    print("17. Edit existing post")
+    print("18. Delete existing post")
+    print("19. List posts by user")
+    print("20. List posts by category")
+    print("21. List category contributions by user")
+    print("22. List user's contributors by category")
 
 
 if __name__ == "__main__":

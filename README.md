@@ -28,7 +28,8 @@ It utilises SQLITE database and a OOP-based design to ensure a simple, clean and
     │   ├── connection.py
     │   ├── create_tables.py
     │   ├── models.py
-    │   └── seed.py
+    │   ├── seed.py
+    │   └── tullierdb.db
     ├── __pycache__
     │      ├── cli.cpython-38.pyc
     │      └── helpers.cpython-38.pyc
@@ -44,14 +45,12 @@ This application uses a data model with three related tables:
  - `posts`
  - `categories`
 
-This application uses 2 dynamic model classes with full ORM methods (`create`, `delete`, `get all`, `find by name` and `find by id`) and corresponding CLI options for managing these records: 
+This application uses 3 dynamic model classes with full ORM methods (`create`, `delete`, `get all`, `find by name` and `find by id`) and corresponding CLI options for managing these records: 
  - `User`
  - `Post`
+ - `Category`
 
-`Category`, on the other hand, is a static, pre-seeded table model that contains fixed categories relevant to posts. It functions as a lookup table, with no need for runtime creation, editing or deletion of category entries via the CLI but maintains the ORM methods and corresponding CLI options for `get all`, `find by name` and `find by id` for lookup purposes.
-
-While the project requirements specify that *each* model class should have full CRUD CLI support, in this implementation, `Category` serves purely as seed data, ensuring data consistency and preventing unintended modification.  
-This approach maintains the integrity of the application and simplifies the user experience, while still adhering to the general project guidelines for dynamic data models.
+This approach maintains the integrity of the application and simplifies the user experience as per the general project guidelines for dynamic data models.
 
 
 ### Project starting necessities
@@ -65,7 +64,7 @@ This approach maintains the integrity of the application and simplifies the user
 
 4. If one wishes to create the EMPTY tables to be used, just run 'python -m lib.db.create_tables'
 
-5. (Optional) If you wish to create the tables and immediately populate them with example/test data, run 'python -m lib.db.seed' to seed the data with constant data and editable example/test data.
+5. (Optional to step 4) Otherwise, if you wish to create the tables and immediately populate them with example/test data, run 'python -m lib.db.seed' to seed the data with constant data and editable example/test data.
 
 6. In order to open the CLI menu, just run 'python -m lib.cli'
 

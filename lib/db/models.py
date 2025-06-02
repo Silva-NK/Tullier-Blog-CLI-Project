@@ -24,6 +24,25 @@ class User(Base):
             return users
         finally:
             session.close()
+    
+    @classmethod
+    def find_by_name(cls, name):
+        session = Session()
+        try:
+            users = session.query(cls).filter(cls.name.ilike(f"%{name}%")).all()
+            return users
+        finally:
+            session.close()
+    
+    @classmethod
+    def find_by_id(cls, id_):
+        session = Session()
+        try:
+            user = session.query(cls).filter(cls.id == id_).first()
+            return user
+        finally:
+            session.close()
+
 
 
 class Category(Base):
@@ -45,6 +64,25 @@ class Category(Base):
             return categories
         finally:
             session.close()
+
+    @classmethod
+    def find_by_name(cls, name):
+        session = Session()
+        try:
+            categories = session.query(cls).filter(cls.name.ilike(f"%{name}%")).all()
+            return categories
+        finally:
+            session.close()
+    
+    @classmethod
+    def find_by_id(cls, id_):
+        session = Session()
+        try:
+            category = session.query(cls).filter(cls.id == id_).first()
+            return category
+        finally:
+            session.close()
+
 
 
 class Post(Base):
@@ -68,5 +106,23 @@ class Post(Base):
         try:
             posts = session.query(cls).all()
             return posts
+        finally:
+            session.close()
+    
+    @classmethod
+    def find_by_title(cls, title):
+        session = Session()
+        try:
+            posts = session.query(cls).filter(cls.title.ilike(f"%{title}%")).all()
+            return posts
+        finally:
+            session.close()
+    
+    @classmethod
+    def find_by_id(cls, id_):
+        session = Session()
+        try:
+            post = session.query(cls).filter(cls.id == id_).first()
+            return post
         finally:
             session.close()
