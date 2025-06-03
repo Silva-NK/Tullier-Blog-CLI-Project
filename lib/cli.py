@@ -63,10 +63,13 @@ def user_management():
         print(c("5. Edit existing user", "32"))
         print(c("6. Delete existing user", "32"))
         print(c("0. Back to Main Menu\n", "32"))
+        print(c("*. Exit Program\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
             break
+        elif choice == "*":
+            exit_program()
         elif choice == "1":
             list_users()
         elif choice == "2":
@@ -82,6 +85,7 @@ def user_management():
         else:
             print(c("Invalid choice", "31"))
 
+
 def category_management():
     while True:
         print("\n" + c("🔹 Category Management Options:", "33"))
@@ -92,10 +96,13 @@ def category_management():
         print(c("5. Edit existing category", "32"))
         print(c("6. Delete existing category", "32"))
         print(c("0. Back to Main Menu\n", "32"))
+        print(c("*. Exit Program\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
             break
+        elif choice == "*":
+            exit_program()
         elif choice == "1":
             list_categories()
         elif choice == "2":
@@ -121,10 +128,13 @@ def post_management():
         print(c("5. Edit existing post", "32"))
         print(c("6. Delete existing post", "32"))
         print(c("0. Back to Main Menu\n", "32"))
+        print(c("*. Exit Program\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
             break
+        elif choice == "*":
+            exit_program()
         elif choice == "1":
             list_posts()
         elif choice == "2":
@@ -147,11 +157,13 @@ def relational_queries():
         print(c("2. List posts by category", "32"))
         print(c("3. List category contributions by user", "32"))
         print(c("4. List user's contributors by category", "32"))
-        print(c("0. Back to Main Menu\n", "32"))
+        print(c("*. Exit Program\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
             break
+        elif choice == "*":
+            exit_program()
         elif choice == "1":
             list_posts_by_user()
         elif choice == "2":

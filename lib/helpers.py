@@ -18,7 +18,6 @@ def list_users():
         print(table)
     else:
         print("\nNo users found.")
-    print("\n")
 
 
 def find_user_by_name():
@@ -33,14 +32,13 @@ def find_user_by_name():
         print(table)
     else:
         print("\nNo users found matching that full or partial name.")
-    print("\n")
 
 
 def find_user_by_id():
     try:
         id_ = int(input("Enter the user's ID: "))
     except:
-        print("Invalid ID. Please enter a integer number.\n")
+        print("Invalid ID. Please enter an integer number.\n")
         return
     
     user = User.find_by_id(id_)
@@ -49,7 +47,6 @@ def find_user_by_id():
         print(f"<ID: {user.id} | Name: {user.name}>")
     else:
         print("\nNo user with matching ID found.")
-    print("\n")
 
 
 def add_new_user():
@@ -90,7 +87,7 @@ def edit_user():
     try:
         user = session.query(User).filter_by(id=id_).first()
         if not user:
-            print("\nNo user with matching ID found.\n")
+            print("\nNo user with matching ID is found.\n")
             return
         
         new_name = input("Enter user's new name: ").strip()
@@ -159,7 +156,6 @@ def list_categories():
         print(table)
     else:
         print("\nNo categories found.")
-    print("\n")
 
 
 def find_category_by_name():
@@ -174,14 +170,13 @@ def find_category_by_name():
         print(table)
     else:
         print("\nNo categories found matching that full or partial name.")
-    print("\n")
 
 
 def find_category_by_id():
     try:
         id_ = int(input("Enter the category's ID: "))
     except:
-        print("Invalid ID. Please enter a integer number.\n")
+        print("Invalid ID. Please enter an integer number.\n")
         return
     
     category = Category.find_by_id(id_)
@@ -190,7 +185,6 @@ def find_category_by_id():
         print(f"<ID: {category.id} | Name: {category.name}>")
     else:
         print("\nNo category with matching ID found.")
-    print("\n")
     
 
 def add_new_category():
@@ -226,7 +220,7 @@ def edit_category():
     session = Session()
     category = session.query(Category).filter_by(id=id_).first()
     if not category:
-        print("\nNo category with that ID found.\n")
+        print("\nNo category with that ID is found.\n")
         return
     
     new_name = input("Enter category's new name: ").strip()
@@ -289,7 +283,6 @@ def list_posts():
             print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo posts found.")
-    print("\n")
 
 
 def find_post_by_title():
@@ -301,14 +294,13 @@ def find_post_by_title():
             print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo posts found matching that full or partial title.")
-    print("\n")
 
 
 def find_post_by_id():
     try:
         id_ = int(input("Enter the post's ID: "))
     except:
-        print("Invalid ID. Please enter a integer number.\n")
+        print("Invalid ID. Please enter an integer number.\n")
         return
     
     post = Post.find_by_id(id_)
@@ -317,7 +309,6 @@ def find_post_by_id():
         print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo post with matching ID found.")
-    print("\n")
 
 
 def add_new_post():
@@ -372,14 +363,14 @@ def edit_post():
     try:
         id_ = int(input("Enter the post's ID: "))
     except ValueError:
-        print("Invalid ID. Please enter an integer.\n")
+        print("Invalid ID. Please enter an integer number.\n")
         return
     
     session = Session()
     try:
         post = session.query(Post).filter_by(id=id_).first()
         if not post:
-            print("\nNo Post found with that ID.\n")
+            print("\nNo Post with that matching ID is found.\n")
             return
         
         new_title = input("Enter post's new title: ").strip()
@@ -498,7 +489,6 @@ def list_posts_by_category():
     from lib.db.connection import Session
     from lib.db.models import Category
 
-
     try:
         id_ = int(input("Enter category's ID: "))
     except:
@@ -523,7 +513,7 @@ def list_posts_by_category():
         for post in posts:
             category_posts.append((post.id, post.title, post.content, post.category.name))
 
-        print(f"\nPosts by Category '{category.name}' (ID: {category.id}):\n")
+        print(f"\nPosts in Category: '{category.name}' (ID: {category.id}):\n")
         for pid, title, content, category in category_posts:
             print(f"Post ID: {pid}\nTitle: {title}\nCategory: {category}\nContent: {content}\n{'-'*40}")
 
@@ -565,8 +555,11 @@ def list_category_by_user():
                 category_counts[category.id]['count'] += 1
 
         print(f"\nUser '{user.name}' (ID: {user.id}) contributions by category:\n{'='*50}")
+        table = PrettyTable()
+        table.field_names = ["Category ID", "Category Name", "Number of Posts"]
         for cat_id, data in category_counts.items():
-            print(f"Category: <ID: {cat_id} | Name: {data['name']} | Posts: {data['count']}>")
+            table.add_row([cat_id, data['name'], data['count']])
+        print(table)
         print()
 
     finally:
@@ -607,8 +600,11 @@ def list_users_by_category():
                 user_counts[user.id]['count'] += 1
         
         print(f"\nCategory '{category.name}' (ID: {category.id}) contributors:\n{'='*50}")
+        table = PrettyTable()
+        table.field_names = ["User ID", "User Name", "Number of Posts"]
         for user_id, data in user_counts.items():
-            print(f"User: <ID: {user_id} | Name: {data['name']} | Posts: {data['count']}>")
+            table.add_row([user_id, data['name'], data['count']])
+        print(table)
         print()
 
     finally:
