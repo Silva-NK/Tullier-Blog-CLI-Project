@@ -93,6 +93,12 @@ post7 = Post(
     user_id=user6.id, category_id=cat7.id
 )
 
-session.add_all([post1, post2, post3, post4, post5, post6, post7])
+post8 = Post(
+    title="Love and Well-Being",
+    content="Relationships are about trust and respect. Healthy connections can boost emotional well-being.",
+    user_id=user4.id, category_id=cat8.id
+)
+
+session.add_all([post1, post2, post3, post4, post5, post6, post7, post8])
 session.commit()
 print("Seeded editable example posts.")

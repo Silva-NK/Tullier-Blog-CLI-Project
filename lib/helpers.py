@@ -257,7 +257,7 @@ def delete_category():
     
     try:
         category.delete(session)
-        print("\nSuccess! Category deleted.\n")
+        print(f"\nSuccess! Category deleted: <ID: {category.id} | Name: {category.name}>\n")
     
     except Exception as exc:
         session.rollback()
@@ -356,11 +356,95 @@ def add_new_post():
         
 
 def edit_post():
-    print(14)
+    from lib.db.connection import Session
+    from lib.db.models import Post
+
+    try:
+        id_ = int(input("Enter the post's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer.\n")
+        return
+    
+    session = Session()
+    try:
+        post = session.query(Post).filter_by(id=id_).first()
+        if not post:
+            print("\nNo Post found with that ID.\n")
+            return
+        
+        new_title = input("Enter post's new title: ").strip()
+        if not new_title:
+            print("\nTitle cannot be an empty string.\n")
+            return
+
+        new_content = input("Enter post's new content: ").strip()
+        if not new_content:
+            print("\nContent cannot be an empty string.\n")
+            return
+
+        new_user_id = input("Enter post's new user's ID: ").strip()
+        if new_user_id:
+            try:
+                new_user_id = int(new_user_id)
+            except ValueError:
+                print("Invalid User ID. It must be an integer.\n")
+                return
+        else:
+            new_user_id = None
+
+        new_category_id = input("Enter post's new category's ID: ").strip()
+        if new_category_id:
+            try:
+                new_category_id = int(new_category_id)
+            except ValueError:
+                print("Invalid Category ID. It must be an integer.\n")
+                return
+        else:
+            new_category_id = None
+
+        post.update_post(session, new_title, new_content, new_user_id, new_category_id)
+        print(f"\nSuccess! Post edited: <ID: {post.id} | New Title: {post.title} | User ID: {post.user_id} | Category ID: {post.category_id}>\n")
+        print(f"< {post.content} >")
+    
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while editing post: {exc}\n")
+    
+    finally:
+        session.close()
 
 
 def delete_post():
-    print(15)
+    from lib.db.connection import Session
+    from lib.db.models import Post
+
+    try:
+        id_ = int(input("Enter the post's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        post = Post.find_by_id(id_)
+        if not post:
+            print("\nNo post with matching ID found.\n")
+            return
+        
+        confirm = input("Are you sure you want to delete this post? (yes/no): ").strip().lower()
+        if confirm != 'yes':
+            print("Post Deletion cancelled.\n")
+            return
+    
+        post.delete(session)
+        print(f"\nSuccess! Post deleted: <ID: {post.id} | New Title: {post.title} | User ID: {post.user_id} | Category ID: {post.category_id}>\n")
+    
+    except Exception as exc:
+        session.rollback()
+        print(f"\nError occurred while deleting post: {exc}\n")
+    
+    finally:
+        session.close()
 
 
 def list_posts_by_user():

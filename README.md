@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Tullier BLOG CLI is a blog manager that seeks to easily run and manage a small scale blog where memeber of Tullier can share thoughts, ideas and other important message and information. It manages users, posts and categories directly from the command line terminal, no need for a browser or web-server and perfect for small-scale, limited resource use. 
+Tullier BLOG CLI is a blog manager that seeks to easily run and manage a small scale blog where members of the Tullier staff can share thoughts, ideas and other important messages and information. It manages users, posts and categories directly from the command line terminal with no need for a browser or web-server and perfect for small-scale, limited-resource use. 
 
 It utilises SQLITE database and a OOP-based design to ensure a simple, clean and fast way to manage internal blog content.
 

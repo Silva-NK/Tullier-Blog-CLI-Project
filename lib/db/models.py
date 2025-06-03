@@ -226,3 +226,42 @@ class Post(Base):
         session.add(post)
         session.commit()
         return post
+    
+    def update_post(self, session, new_title=None, new_content=None, new_user_id=None, new_category_id=None):
+        if new_title is not None:
+            if not isinstance(new_title, str):
+                raise TypeError("Title must be a string.")
+            new_title = new_title.strip()
+            if not new_title:
+                raise ValueError("Title cannot be an empty string.")
+            self.title = new_title
+
+        if new_content is not None:
+            if not isinstance(new_content, str):
+                raise TypeError("Content must be a string.")
+            new_content = new_content.strip()
+            if not new_content:
+                raise ValueError("Content cannot be an empty string.")
+            self.content = new_content
+        
+        if new_user_id is not None:
+            if not isinstance(new_user_id, int):
+                raise TypeError("User ID must be an integer.")
+            user = session.query(User).filter_by(id=new_user_id).first()
+            if not user:
+                raise ValueError("No User instance with this ID.")
+            self.user_id = new_user_id
+
+        if new_category_id is not None:
+            if not isinstance(new_category_id, int):
+                raise TypeError("Category ID must be an integer.")
+            category = session.query(Category).filter_by(id=new_category_id).first()
+            if not category:
+                raise ValueError("No Category instance with this ID.")
+            self.category_id = new_category_id
+        
+        session.commit()
+
+    def delete(self, session):
+        session.delete(self)
+        session.commit()
