@@ -30,13 +30,13 @@ def c(text, color_code):
 def main_menu():
     while True:
         print("\n" + "*"*50)
-        print(c("📝  Welcome to the Tullier Blog Manager CLI!  📝", "36"))  # Cyan
+        print(c("📝  Welcome to the Tullier Blog Manager CLI!  📝", "36"))
         print("*"*50 + "\n")
         print(c("Main Menu:", "33"))
         print(c("1. User Management", "32"))
         print(c("2. Category Management", "32"))
         print(c("3. Post Management", "32"))
-        print(c("4. Relational Queries", "32"))  # Added new submenu
+        print(c("4. Relational Queries", "32"))
         print(c("0. Exit\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
@@ -49,7 +49,7 @@ def main_menu():
         elif choice == "3":
             post_management()
         elif choice == "4":
-            relational_queries()  # New submenu
+            relational_queries()
         else:
             print(c("Invalid choice", "31"))
 
