@@ -274,7 +274,7 @@ def list_posts():
     if posts:
         print("\n=== All Posts ===\n")
         for post in posts:
-            print(f"<ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>")
+            print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo posts found.")
     print("\n")
@@ -286,7 +286,7 @@ def find_post_by_title():
     if posts:
         print("\n=== Partial or Fully Matching Categories ===\n")
         for post in posts:
-            print(f"<ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>")
+            print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo posts found matching that full or partial title.")
     print("\n")
@@ -302,8 +302,7 @@ def find_post_by_id():
     post = Post.find_by_id(id_)
     if post:
         print("\nSuccess! Post found.\n")
-        print(f"<ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>")
-        print(f"< {post.content} >")
+        print(f"Post ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     else:
         print("\nNo post with matching ID found.")
     print("\n")
@@ -346,8 +345,7 @@ def add_new_post():
     session = Session()
     try:
         post = Post.create(session, title, content, user_id, category_id)
-        print(f"\nSuccess! New post added: <ID: {post.id} | Category_id: {post.category_id} | By User_id: {post.user_id} | Title: {post.title}>\n")
-        print(f"< {post.content} >")
+        print(f"\nSuccess! New post added:\nPost ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     except Exception as exc:
         session.rollback()
         print(f"\nError occurred while adding post: {exc}\n")
@@ -403,8 +401,7 @@ def edit_post():
             new_category_id = None
 
         post.update_post(session, new_title, new_content, new_user_id, new_category_id)
-        print(f"\nSuccess! Post edited: <ID: {post.id} | New Title: {post.title} | User ID: {post.user_id} | Category ID: {post.category_id}>\n")
-        print(f"< {post.content} >")
+        print(f"\nSuccess! Post edited:\nPost ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     
     except Exception as exc:
         session.rollback()
@@ -437,7 +434,7 @@ def delete_post():
             return
     
         post.delete(session)
-        print(f"\nSuccess! Post deleted: <ID: {post.id} | New Title: {post.title} | User ID: {post.user_id} | Category ID: {post.category_id}>\n")
+        print(f"\nSuccess! Post deleted:\nPost ID: {post.id}\nTitle: {post.title}\nCategory ID: {post.category_id}\nUser ID: {post.user_id}\nContent: {post.content}\n{'-'*40}")
     
     except Exception as exc:
         session.rollback()
@@ -447,17 +444,160 @@ def delete_post():
         session.close()
 
 
+# Relationship based functions.
+
 def list_posts_by_user():
-    print(16)
+    from lib.db.connection import Session
+    from lib.db.models import User
+
+    try:
+        id_ = int(input("Enter user's ID: "))
+    except:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        user = session.query(User).filter_by(id=id_).first()
+        if not user:
+            print("\nNo user with matching ID found.\n")
+            return
+        
+        posts = user.posts
+
+        if not posts:
+            print(f"User 'ID: {user.id} | Name: {user.name}' has no posts.")
+            return
+        
+        user_posts = []
+
+        for post in posts:
+            user_posts.append((post.id, post.title, post.content, post.category.name))
+
+        print(f"\nPosts by User '{user.name}' (ID: {user.id}):\n")
+        for pid, title, content, category in user_posts:
+            print(f"Post ID: {pid}\nTitle: {title}\nCategory: {category}\nContent: {content}\n{'-'*40}")
+
+    finally:
+        session.close()
 
 
 def list_posts_by_category():
-    print(17)
+    from lib.db.connection import Session
+    from lib.db.models import Category
+
+
+    try:
+        id_ = int(input("Enter category's ID: "))
+    except:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        category = session.query(Category).filter_by(id=id_).first()
+        if not category:
+            print("\nNo category with matching ID found.\n")
+            return
+        
+        posts = category.posts
+
+        if not posts:
+            print(f"Category 'ID: {category.id} | Name: {category.name}' has no posts.\n{'-'*40}\n")
+            return
+        
+        category_posts = []
+
+        for post in posts:
+            category_posts.append((post.id, post.title, post.content, post.category.name))
+
+        print(f"\nPosts by Category '{category.name}' (ID: {category.id}):\n")
+        for pid, title, content, category in category_posts:
+            print(f"Post ID: {pid}\nTitle: {title}\nCategory: {category}\nContent: {content}\n{'-'*40}")
+
+    finally:
+        session.close()
 
 
 def list_category_by_user():
-    print(18)
+    from lib.db.connection import Session
+    from lib.db.models import User, Category
 
+    try:
+        id_ = int(input("Enter user's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        user = session.query(User).filter_by(id=id_).first()
+        if not user:
+            print("\nNo user with matching ID found.\n")
+            return
+        
+        posts = user.posts
+        if not posts:
+            print(f"User '{user.name}' (ID: {user.id}) has not contributed to any category.\n{'-'*40}\n")
+            return
+        
+        category_counts = {}
+        for post in posts:
+            category = post.category
+            if category.id not in category_counts:
+                category_counts[category.id] = {
+                    'name': category.name,
+                    'count': 1
+                }
+            else:
+                category_counts[category.id]['count'] += 1
+
+        print(f"\nUser '{user.name}' (ID: {user.id}) contributions by category:\n{'='*50}")
+        for cat_id, data in category_counts.items():
+            print(f"Category: <ID: {cat_id} | Name: {data['name']} | Posts: {data['count']}>")
+        print()
+
+    finally:
+        session.close()
+            
     
 def list_users_by_category():
-    print(19)
+    from lib.db.connection import Session
+    from lib.db.models import User, Category, Post
+
+    try:
+        id_ = int(input("Enter category's ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter an integer number.\n")
+        return
+    
+    session = Session()
+    try:
+        category = session.query(Category).filter_by(id=id_).first()
+        if not category:
+            print("\nNo category with matching ID found.\n")
+            return
+        
+        posts = category.posts
+        if not posts:
+            print(f"\nCategory '{category.name}' (ID: {category.id}) has no contributors yet.\n{'-'*40}\n")
+            return
+        
+        user_counts = {}
+        for post in posts:
+            user = post.user
+            if user.id not in user_counts:
+                user_counts[user.id] = {
+                    'name': user.name,
+                    'count': 1
+                }
+            else:
+                user_counts[user.id]['count'] += 1
+        
+        print(f"\nCategory '{category.name}' (ID: {category.id}) contributors:\n{'='*50}")
+        for user_id, data in user_counts.items():
+            print(f"User: <ID: {user_id} | Name: {data['name']} | Posts: {data['count']}>")
+        print()
+
+    finally:
+        session.close()
