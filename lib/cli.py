@@ -24,12 +24,46 @@ from lib.helpers import (
     list_users_by_category
 )
 
-def main():
+def c(text, color_code):
+    return f"\033[{color_code}m{text}\033[0m"
+
+def main_menu():
     while True:
-        menu()
-        choice = input("> ")
+        print("\n" + "*"*50)
+        print(c("📝  Welcome to the Tullier Blog Manager CLI!  📝", "36"))  # Cyan
+        print("*"*50 + "\n")
+        print(c("Main Menu:", "33"))
+        print(c("1. User Management", "32"))
+        print(c("2. Category Management", "32"))
+        print(c("3. Post Management", "32"))
+        print(c("0. Exit", "32"))
+
+        choice = input(c("Key in option: ", "36"))
         if choice == "0":
             exit_program()
+        elif choice == "1":
+            user_management()
+        elif choice == "2":
+            category_management()
+        elif choice == "3":
+            post_management()
+        else:
+            print(c("Invalid choice", "31"))
+
+def user_management():
+    while True:
+        print("\n" + c("🔹 User Management Options:", "33"))
+        print(c("1. List all users", "32"))
+        print(c("2. Find user by name", "32"))
+        print(c("3. Find user by id", "32"))
+        print(c("4. Add new user", "32"))
+        print(c("5. Edit existing user", "32"))
+        print(c("6. Delete existing user", "32"))
+        print(c("0. Back to Main Menu", "32"))
+
+        choice = input(c("Key in option: ", "36"))
+        if choice == "0":
+            break
         elif choice == "1":
             list_users()
         elif choice == "2":
@@ -42,68 +76,78 @@ def main():
             edit_user()
         elif choice == "6":
             delete_user()
-        elif choice == "7":
+        else:
+            print(c("Invalid choice", "31"))
+
+def category_management():
+    while True:
+        print("\n" + c("🔹 Category Management Options:", "33"))
+        print(c("1. List all categories", "32"))
+        print(c("2. Find category by name", "32"))
+        print(c("3. Find category by id", "32"))
+        print(c("4. Add new category", "32"))
+        print(c("5. Edit existing category", "32"))
+        print(c("6. Delete existing category", "32"))
+        print(c("7. List category contributions by user", "32"))
+        print(c("8. List user's contributors by category", "32"))
+        print(c("0. Back to Main Menu", "32"))
+
+        choice = input(c("Key in option: ", "36"))
+        if choice == "0":
+            break
+        elif choice == "1":
             list_categories()
-        elif choice == "8":
+        elif choice == "2":
             find_category_by_name()
-        elif choice == "9":
+        elif choice == "3":
             find_category_by_id()
-        elif choice == "10":
+        elif choice == "4":
             add_new_category()
-        elif choice == "11":
+        elif choice == "5":
             edit_category()
-        elif choice == "12":
+        elif choice == "6":
             delete_category()
-        elif choice == "13":
-            list_posts()
-        elif choice == "14":
-            find_post_by_title()
-        elif choice == "15":
-            find_post_by_id()
-        elif choice == "16":
-            add_new_post()
-        elif choice == "17":
-            edit_post()
-        elif choice == "18":
-            delete_post()
-        elif choice == "19":
-            list_posts_by_user()
-        elif choice == "20":
-            list_posts_by_category()
-        elif choice == "21":
+        elif choice == "7":
             list_category_by_user()
-        elif choice == "22":
+        elif choice == "8":
             list_users_by_category()
         else:
-            print("Invalid choice")
-        
+            print(c("Invalid choice", "31"))
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. List all users")
-    print("2. Find user by name")
-    print("3. Find user by id")
-    print("4. Add new user")
-    print("5. Edit existing user")
-    print("6. Delete existing user")
-    print("7. List all categories")
-    print("8. Find category by name")
-    print("9. Find category by id")
-    print("10. Add new category")
-    print("11. Edit existing category")
-    print("12. Delete existing category")
-    print("13. List all posts")
-    print("14. Find post by title")
-    print("15. Find post by id")
-    print("16. Add new post")
-    print("17. Edit existing post")
-    print("18. Delete existing post")
-    print("19. List posts by user")
-    print("20. List posts by category")
-    print("21. List category contributions by user")
-    print("22. List user's contributors by category")
+def post_management():
+    while True:
+        print("\n" + c("🔹 Post Management Options:", "33"))
+        print(c("1. List all posts", "32"))
+        print(c("2. Find post by title", "32"))
+        print(c("3. Find post by id", "32"))
+        print(c("4. Add new post", "32"))
+        print(c("5. Edit existing post", "32"))
+        print(c("6. Delete existing post", "32"))
+        print(c("7. List posts by user", "32"))
+        print(c("8. List posts by category", "32"))
+        print(c("0. Back to Main Menu", "32"))
 
+        choice = input(c("Key in option: ", "36"))
+        if choice == "0":
+            break
+        elif choice == "1":
+            list_posts()
+        elif choice == "2":
+            find_post_by_title()
+        elif choice == "3":
+            find_post_by_id()
+        elif choice == "4":
+            add_new_post()
+        elif choice == "5":
+            edit_post()
+        elif choice == "6":
+            delete_post()
+        elif choice == "7":
+            list_posts_by_user()
+        elif choice == "8":
+            list_posts_by_category()
+        else:
+            print(c("Invalid choice", "31"))
 
 if __name__ == "__main__":
-    main()
+    main_menu()

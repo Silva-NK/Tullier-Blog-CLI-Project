@@ -1,9 +1,9 @@
 from lib.db.models import User, Category, Post
+from prettytable import PrettyTable
 
 def exit_program():
     print("Goodbye!")
     exit()
-
 
 # User Helper Functions
     
@@ -11,8 +11,11 @@ def list_users():
     users = User.get_all()
     if users:
         print("\n=== All Users ===\n")
+        table = PrettyTable()
+        table.field_names = ["ID", "Name"]
         for user in users:
-            print(f"<ID: {user.id} | Name: {user.name}>")
+            table.add_row([user.id, user.name])
+        print(table)
     else:
         print("\nNo users found.")
     print("\n")
@@ -23,8 +26,11 @@ def find_user_by_name():
     users = User.find_by_name(name)
     if users:
         print("\n=== Partial or Fully Matching Users ===\n")
+        table = PrettyTable()
+        table.field_names = ["ID", "Name"]
         for user in users:
-            print(f"<ID: {user.id} | Name: {user.name}>")
+            table.add_row([user.id, user.name])
+        print(table)
     else:
         print("\nNo users found matching that full or partial name.")
     print("\n")
@@ -146,8 +152,11 @@ def list_categories():
     categories = Category.get_all()
     if categories:
         print("\n=== All Categories ===\n")
+        table = PrettyTable()
+        table.field_names = ["ID", "Name"]
         for category in categories:
-            print(f"<ID: {category.id} | Name: {category.name}>")
+            table.add_row([category.id, category.name])
+        print(table)
     else:
         print("\nNo categories found.")
     print("\n")
@@ -158,8 +167,11 @@ def find_category_by_name():
     categories = Category.find_by_name(name)
     if categories:
         print("\n=== Partial or Fully Matching Categories ===\n")
+        table = PrettyTable()
+        table.field_names = ["ID", "Name"]
         for category in categories:
-            print(f"<ID: {category.id} | Name: {category.name}>")
+            table.add_row([category.id, category.name])
+        print(table)
     else:
         print("\nNo categories found matching that full or partial name.")
     print("\n")
