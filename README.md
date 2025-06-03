@@ -44,9 +44,9 @@ It utilises SQLITE database and a OOP-based design to ensure a simple, clean and
 ### Data Model and CLI Functionality
 
 This application uses a data model with three related tables:
-- *** Users ***: Staff members who can create blog posts.
-- *** Posts ***: Blog entries shared by users.
-- *** Categories ***: Categorisation of the posts by topic.
+- **Users**: Staff members who can create blog posts.
+- **Posts**: Blog entries shared by users.
+- **Categories**: Categorisation of the posts by topic.
 
 Each table is represented by a model class with thorough data validation, relationship handling, and dynamic ORM methods for record management:
 

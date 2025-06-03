@@ -36,7 +36,8 @@ def main_menu():
         print(c("1. User Management", "32"))
         print(c("2. Category Management", "32"))
         print(c("3. Post Management", "32"))
-        print(c("0. Exit", "32"))
+        print(c("4. Relational Queries", "32"))  # Added new submenu
+        print(c("0. Exit\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
@@ -47,6 +48,8 @@ def main_menu():
             category_management()
         elif choice == "3":
             post_management()
+        elif choice == "4":
+            relational_queries()  # New submenu
         else:
             print(c("Invalid choice", "31"))
 
@@ -59,7 +62,7 @@ def user_management():
         print(c("4. Add new user", "32"))
         print(c("5. Edit existing user", "32"))
         print(c("6. Delete existing user", "32"))
-        print(c("0. Back to Main Menu", "32"))
+        print(c("0. Back to Main Menu\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
@@ -88,9 +91,7 @@ def category_management():
         print(c("4. Add new category", "32"))
         print(c("5. Edit existing category", "32"))
         print(c("6. Delete existing category", "32"))
-        print(c("7. List category contributions by user", "32"))
-        print(c("8. List user's contributors by category", "32"))
-        print(c("0. Back to Main Menu", "32"))
+        print(c("0. Back to Main Menu\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
@@ -107,10 +108,6 @@ def category_management():
             edit_category()
         elif choice == "6":
             delete_category()
-        elif choice == "7":
-            list_category_by_user()
-        elif choice == "8":
-            list_users_by_category()
         else:
             print(c("Invalid choice", "31"))
 
@@ -123,9 +120,7 @@ def post_management():
         print(c("4. Add new post", "32"))
         print(c("5. Edit existing post", "32"))
         print(c("6. Delete existing post", "32"))
-        print(c("7. List posts by user", "32"))
-        print(c("8. List posts by category", "32"))
-        print(c("0. Back to Main Menu", "32"))
+        print(c("0. Back to Main Menu\n", "32"))
 
         choice = input(c("Key in option: ", "36"))
         if choice == "0":
@@ -142,10 +137,29 @@ def post_management():
             edit_post()
         elif choice == "6":
             delete_post()
-        elif choice == "7":
+        else:
+            print(c("Invalid choice", "31"))
+
+def relational_queries():
+    while True:
+        print("\n" + c("🔹 Relational Queries:", "33"))
+        print(c("1. List posts by user", "32"))
+        print(c("2. List posts by category", "32"))
+        print(c("3. List category contributions by user", "32"))
+        print(c("4. List user's contributors by category", "32"))
+        print(c("0. Back to Main Menu\n", "32"))
+
+        choice = input(c("Key in option: ", "36"))
+        if choice == "0":
+            break
+        elif choice == "1":
             list_posts_by_user()
-        elif choice == "8":
+        elif choice == "2":
             list_posts_by_category()
+        elif choice == "3":
+            list_category_by_user()
+        elif choice == "4":
+            list_users_by_category()
         else:
             print(c("Invalid choice", "31"))
 
